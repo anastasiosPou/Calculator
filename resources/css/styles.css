@@ -1,5 +1,6 @@
 html {
 	box-sizing: border-box;
+	background-color: #f1faee;
 }
 
 *, *:before, *:after {
@@ -11,17 +12,20 @@ html {
 	background-color: #111;
 	color: #fff;
 	font-family: monospace, sans-serif;
-	font-size: 3rem;
-	padding: 2rem;
+	font-size: 4rem;
+	padding-top: 2rem;
+	padding-right: 2rem;
 	text-align: right;
 }
 
 .btn {
 	background-color: #D8D9DB;
+	border: none;
 	font-family: Helvetica, sans-serif;
-	font-size: 5rem;
-	padding: 1rem;
+	font-size: 4rem;
+	padding: 0.8rem;
 	width: 100%;
+	line-height: 1.5;
 }
 
 .btn-arithmetic {
@@ -30,3 +34,80 @@ html {
 }
 
 /* Layout Styles */
+#calculator,
+#number-pad,
+#arithmetic-operations {
+	display: grid;
+}
+
+#calculator {
+	height: 100vh;
+	grid-template-areas:
+		"rp rp rp rp"
+		"cl cl cl del"
+		"np np np ao"
+		"np np np ao";
+}
+
+#number-pad {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+/*
+#arithmetic-operations {
+
+}
+*/
+
+#calculator,
+#number-pad,
+#arithmetic-operations {
+	grid-gap: 2px;
+}
+
+/* Grid areas */
+#results-pane {
+	grid-area: rp;
+}
+
+#clear-btn {
+	grid-area: cl;
+}
+
+#delete-btn {
+	grid-area: del;
+}
+
+#arithmetic-operations {
+	grid-area: ao;
+}
+
+#number-pad {
+	grid-area: np;
+}
+
+/* Media queries */
+@media screen and (min-width: 680px) {
+	main {
+		width: 680px;
+		margin: 0 auto;
+	}
+	
+	#calculator {
+		grid-template-areas:
+			"rp rp rp rp rp rp rp rp rp rp rp rp"
+			"cl cl cl cl cl del del del ao ao ao ao"
+			"np np np np np np np np ao ao ao ao"
+			"np np np np np np np np ao ao ao ao"
+			"np np np np np np np np ao ao ao ao"
+			"np np np np np np np np ao ao ao ao";
+	}
+	
+	#number-pad {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	
+	#num-0 {
+		grid-column: 1 / -1;
+	}
+}
