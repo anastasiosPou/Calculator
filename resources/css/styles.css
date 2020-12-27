@@ -5,3 +5,28 @@ html {
 *, *:before, *:after {
 	box-sizing: inherit;
 }
+
+/* Typography Styles */
+#results-pane {
+	background-color: #111;
+	color: #fff;
+	font-family: monospace, sans-serif;
+	font-size: 3rem;
+	padding: 2rem;
+	text-align: right;
+}
+
+.btn {
+	background-color: #D8D9DB;
+	font-family: Helvetica, sans-serif;
+	font-size: 5rem;
+	padding: 1rem;
+	width: 100%;
+}
+
+.btn-arithmetic {
+	background-color: #DF974C;
+	color: #eee;
+}
+
+/* Layout Styles */
