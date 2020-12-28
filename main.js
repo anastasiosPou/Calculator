@@ -3,13 +3,61 @@ const clearButton = document.getElementById('clear-btn');
 const deleteButton = document.getElementById('delete-btn');
 const arithmeticOperationsSection = document.getElementById('arithmetic-operations');
 const numberPadSection = document.getElementById('number-pad');
+const equalsButton = document.getElementById('equals-btn');
+let mathResult = 0;
+let inputNumbers = [];
+let operations = [];
+
+function add(a, b) { return a + b; }
+
+function subtract(a, b) { return a - b; }
+
+function multiply(a, b) { return a * b; }
+
+function divide(a, b) { return a / b; }
+
+function equals() { 
+	resultsPane.textContent = mathResult;
+	reset();
+}
+
+function determineOperationFrom(value) {
+	switch (value) {
+		case 'add':
+			return add;
+			break;
+		case 'subtract':
+			return subtract;
+			break;
+		case 'multiply':
+			return multiply;
+			break;
+		case 'divide':
+			return divide;
+			break;
+		case 'equals':
+			return equals;
+			break;
+	}
+}
+
+function reset() {
+	mathResult = 0;
+	inputNumbers = [];
+}
+
+function clearResultsPane() {
+	resultsPane.textContent = '0';
+}
+
+resultsPane.textContent = '0';
 
 //The event on the numberpad will output the number clicked on the results pane and 
 //will trigger some other functionality
 numberPadSection.addEventListener('click', (e) => {
 	e.stopPropagation();
 	
-	if (resultsPane.textContent.match(/^0/)) {
+	if (resultsPane.textContent.match(/^0|[a-zA-Z]/)) {
 		resultsPane.textContent = '';
 	}
 	
@@ -17,7 +65,10 @@ numberPadSection.addEventListener('click', (e) => {
 });
 
 //Event to clear the results pane from any number that we input.
-clearButton.addEventListener('click', (e) => resultsPane.textContent = '0');
+clearButton.addEventListener('click', (e) => {
+	clearResultsPane();
+	reset();
+});
 
 //Event to delete the last number entered
 deleteButton.addEventListener('click', (e) => {
@@ -32,3 +83,39 @@ deleteButton.addEventListener('click', (e) => {
 	}
 	
 });
+
+// Event listener for the arithmetic operations section
+arithmeticOperationsSection.addEventListener('click', (e) => {
+	e.stopPropagation();
+	
+	let operation = '';
+	
+	if (resultsPane.textContent !== '0') {
+		
+		//add the number that we type to the array of input numbers
+		inputNumbers.push(Number.parseInt(resultsPane.textContent));
+		
+		resultsPane.textContent = '0';
+		
+		/*The function here considers the value of the button and returns the corresponding function */
+		operation = determineOperationFrom(e.target.value);
+		
+		if (operation !== equals) {
+			operations.push(operation);
+			console.log(operations[0]);
+		}
+		
+		if (inputNumbers.length > 1) {
+			console.log(inputNumbers);
+			mathResult = inputNumbers.reduce(operations[operations.length - 1]);
+			console.log(mathResult);
+			inputNumbers = [mathResult];
+			console.log(inputNumbers);
+		}
+		
+		if (operation === equals) { operation(); }
+		
+	} 
+});
+
+
