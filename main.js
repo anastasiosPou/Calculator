@@ -41,17 +41,19 @@ function determineOperationFrom(value) {
 }
 
 function reset() {
-	mathResult = 0;
 	inputNumbers = [];
+	operations = [];
 }
 
 function clearResultsPane() {
 	resultsPane.textContent = '0';
 }
 
-function evaluateMath(result) {
-	result = inputNumbers.reduce(operations[operations.length - 2]);
-	
+function evaluateMath() {
+	let result = 0;
+	if (operations[operations.length - 2] !== equals) {
+		result = inputNumbers.reduce(operations[operations.length - 2]);
+	}
 	if (operations[operations.length - 1] === equals) {
 		equals(result);
 		reset();
@@ -97,20 +99,18 @@ deleteButton.addEventListener('click', (e) => {
 // Event listener for the arithmetic operations section
 arithmeticOperationsSection.addEventListener('click', (e) => {
 	e.stopPropagation();
-	const mathResult = 0;
-	
 	if (resultsPane.textContent !== '0') {
-		
-		//add the number that we type to the array of input numbers
-		inputNumbers.push(Number.parseInt(resultsPane.textContent));
 		
 		//We push the opearation to the operations array
 		operations.push(determineOperationFrom(e.target.value));
 		
+		//add the number that we type to the array of input numbers
+		inputNumbers.push(Number.parseInt(resultsPane.textContent));
+
 		resultsPane.textContent = '0';
-		
+
 		if (inputNumbers.length > 1) {
-			evaluateMath(mathResult);
+			evaluateMath();
 		}
 	} 
 });
