@@ -4,7 +4,7 @@ const deleteButton = document.getElementById('delete-btn');
 const arithmeticOperationsSection = document.getElementById('arithmetic-operations');
 const numberPadSection = document.getElementById('number-pad');
 const equalsButton = document.getElementById('equals-btn');
-let mathResult = 0;
+
 let inputNumbers = [];
 let operations = [];
 
@@ -16,9 +16,8 @@ function multiply(a, b) { return a * b; }
 
 function divide(a, b) { return a / b; }
 
-function equals() { 
-	resultsPane.textContent = mathResult;
-	reset();
+function equals(result) { 
+	resultsPane.textContent = result;
 }
 
 function determineOperationFrom(value) {
@@ -48,6 +47,17 @@ function reset() {
 
 function clearResultsPane() {
 	resultsPane.textContent = '0';
+}
+
+function evaluateMath(result) {
+	result = inputNumbers.reduce(operations[operations.length - 2]);
+	
+	if (operations[operations.length - 1] === equals) {
+		equals(result);
+		reset();
+	} else {
+		inputNumbers = [result];
+	}
 }
 
 resultsPane.textContent = '0';
@@ -87,35 +97,23 @@ deleteButton.addEventListener('click', (e) => {
 // Event listener for the arithmetic operations section
 arithmeticOperationsSection.addEventListener('click', (e) => {
 	e.stopPropagation();
-	
-	let operation = '';
+	const mathResult = 0;
 	
 	if (resultsPane.textContent !== '0') {
 		
 		//add the number that we type to the array of input numbers
 		inputNumbers.push(Number.parseInt(resultsPane.textContent));
 		
+		//We push the opearation to the operations array
+		operations.push(determineOperationFrom(e.target.value));
+		
 		resultsPane.textContent = '0';
 		
-		/*The function here considers the value of the button and returns the corresponding function */
-		operation = determineOperationFrom(e.target.value);
-		
-		if (operation !== equals) {
-			operations.push(operation);
-			console.log(operations[0]);
-		}
-		
 		if (inputNumbers.length > 1) {
-			console.log(inputNumbers);
-			mathResult = inputNumbers.reduce(operations[operations.length - 1]);
-			console.log(mathResult);
-			inputNumbers = [mathResult];
-			console.log(inputNumbers);
+			evaluateMath(mathResult);
 		}
-		
-		if (operation === equals) { operation(); }
-		
 	} 
 });
+
 
 
